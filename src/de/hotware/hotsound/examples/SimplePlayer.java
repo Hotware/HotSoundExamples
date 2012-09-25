@@ -12,18 +12,22 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 
 public class SimplePlayer {
 	
-	public static void main(String[] args) throws MalformedURLException, SongInsertionException {
-		if(args.length > 1) {
+	public static void main(String[] args) throws MalformedURLException, SongInsertionException, InterruptedException {
+		if(args.length >= 1) {
 			IMusicPlayer player = new StreamMusicPlayer(new IPlaybackListener() {
 	
 				@Override
 				public void onEnd(PlaybackEndEvent pEvent) {
 					System.out.println("Playback ended");
+					System.exit(1);
 				}
 				
 			});
 			player.insert(new BasicSong(new File(args[0])));
 			player.startPlayback();
+			while(true) {
+				Thread.sleep(1000);
+			}
 		}
 	}
 
