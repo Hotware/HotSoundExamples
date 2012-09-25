@@ -31,9 +31,6 @@ public class SimplePlayer {
 			});
 			player.insert(new BasicSong(new File(args[0])));
 			player.startPlayback();
-			while(true) {
-				Thread.sleep(1000);
-			}
 		}
 	}
 
