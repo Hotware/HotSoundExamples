@@ -1,11 +1,11 @@
 package de.hotware.hotsound.examples;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.MalformedURLException;
 
 import de.hotware.hotsound.audio.player.BasicSong;
 import de.hotware.hotsound.audio.player.IMusicPlayer;
-import de.hotware.hotsound.audio.player.IMusicPlayer.SongInsertionException;
+import de.hotware.hotsound.audio.player.MusicPlayerException;
 import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 
 /**
@@ -15,8 +15,7 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
  */
 public class SimplePlayer {
 
-	public static void main(String[] args) throws SongInsertionException,
-			IOException {
+	public static void main(String[] args) throws MusicPlayerException, MalformedURLException {
 		if(args.length >= 1) {
 			IMusicPlayer player = new StreamMusicPlayer();
 			player.insert(new BasicSong(new File(args[0])));
