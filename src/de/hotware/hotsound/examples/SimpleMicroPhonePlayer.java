@@ -31,7 +31,7 @@ public class SimpleMicroPhonePlayer {
 				}, Executors.newSingleThreadExecutor());
 				Mixer mixer = mixers.get(0);
 				mixer.open();
-				player.insert(new RecordSong(mixers.get(0)), new BasicAudioDevice());
+				player.insert(new RecordSong(mixer), new BasicAudioDevice());
 				player.start();
 				//wait 10 seconds (equals approx. 10 seconds of saved audio)
 				Thread.sleep(10000);
