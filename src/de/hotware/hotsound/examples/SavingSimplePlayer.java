@@ -8,10 +8,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import de.hotware.hotsound.audio.data.SavingAudioDevice;
-import de.hotware.hotsound.audio.player.BasicSong;
 import de.hotware.hotsound.audio.player.IMusicListener;
 import de.hotware.hotsound.audio.player.IMusicPlayer;
 import de.hotware.hotsound.audio.player.MusicPlayerException;
+import de.hotware.hotsound.audio.player.SavingSong;
 import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 
 
@@ -29,7 +29,7 @@ public class SavingSimplePlayer {
 				}
 				
 			}, service);
-			player.insert(new BasicSong(new URL(args[0])), new SavingAudioDevice(new File(args[1])));
+			player.insert(new SavingSong(new URL(args[0])), new SavingAudioDevice(new File(args[1])));
 			player.start();
 			//wait 10 seconds (equals approx. 10 seconds of saved audio)
 			Thread.sleep(10000);
