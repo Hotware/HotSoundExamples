@@ -17,11 +17,11 @@ public class SavingSimplePlayer {
 		if(args.length >= 2) {
 			IMusicPlayer player = new StreamMusicPlayer();
 			player.insert(new BasicSong(new URL(args[0])), new SavingAudioDevice(new File(args[1])));
-			player.startPlayback();
+			player.start();
 			//wait 10 seconds (equals approx. 10 seconds of saved audio)
 			Thread.sleep(10000);
 			//always stop for bug avoidance in saving the audiofile
-			player.stopPlayback();
+			player.stop();
 		}
 	}
 

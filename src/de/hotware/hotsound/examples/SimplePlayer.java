@@ -19,7 +19,7 @@ public class SimplePlayer {
 		if(args.length >= 1) {
 			IMusicPlayer player = new StreamMusicPlayer();
 			player.insert(new BasicSong(new File(args[0])));
-			player.startPlayback();
+			player.start();
 		}
 	}
 
