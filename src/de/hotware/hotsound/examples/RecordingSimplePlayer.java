@@ -25,7 +25,7 @@ public class RecordingSimplePlayer {
 			InterruptedException, LineUnavailableException {
 		List<Mixer> mixers = RecordAudio.getRecordMixers();
 		if(mixers.size() > 0) {
-			ExecutorService service = Executors.newSingleThreadExecutor();
+			final ExecutorService service = Executors.newSingleThreadExecutor();
 			IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
 
 				@Override
@@ -37,7 +37,6 @@ public class RecordingSimplePlayer {
 			Mixer mixer = mixers.get(0);
 			player.insert(new RecordSong(mixer), new RecordingAudioDevice(new File("recording.wav")));
 			player.start();
-			//wait 10 seconds (equals approx. 10 seconds of saved audio)
 			Thread.sleep(10000);
 			player.stop();
 			service.shutdown();
