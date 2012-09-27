@@ -35,7 +35,6 @@ public class SimpleMicroPhonePlayer {
 				player.start();
 				//wait 10 seconds (equals approx. 10 seconds of saved audio)
 				Thread.sleep(10000);
-				//always stop for bug avoidance in saving the audiofile
 				player.stop();
 			}
 	}
