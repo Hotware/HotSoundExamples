@@ -24,12 +24,17 @@ public class SimpleMicroPhonePlayer {
 			List<Mixer> mixers = RecordAudio.getRecordMixers();
 			if(mixers.size() > 0) {
 				ExecutorService service = Executors.newSingleThreadExecutor();
-				IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
+				final IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
 
 					@Override
 					public void onEnd(MusicEvent pEvent) {
 						System.out.println(pEvent.getThrowable());
 						System.out.println("stopped");
+						try {
+							pEvent.getSource().close();
+						} catch(MusicPlayerException e) {
+							e.printStackTrace();
+						}
 					}
 					
 				}, service);

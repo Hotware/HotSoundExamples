@@ -27,6 +27,11 @@ public class SavingSimplePlayer {
 				public void onEnd(MusicEvent pEvent) {
 					System.out.println(pEvent.getThrowable());
 					System.out.println("stopped");
+					try {
+						pEvent.getSource().close();
+					} catch(MusicPlayerException e) {
+						e.printStackTrace();
+					}
 				}
 				
 			}, service);
