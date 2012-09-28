@@ -28,6 +28,7 @@ public class SimpleMicroPhonePlayer {
 
 					@Override
 					public void onEnd(MusicEvent pEvent) {
+						System.out.println(pEvent.getThrowable());
 						System.out.println("stopped");
 					}
 					

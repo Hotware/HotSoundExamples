@@ -18,18 +18,19 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 public class SavingSimplePlayer {
 	
 	public static void main(String[] args) throws MusicPlayerException, MalformedURLException, InterruptedException {
-		if(args.length >= 2) {
+		if(args.length >= 1) {
 			ExecutorService service = Executors.newSingleThreadExecutor();
 			//multithreading because of blocking behaviour
 			IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
 
 				@Override
 				public void onEnd(MusicEvent pEvent) {
+					System.out.println(pEvent.getThrowable());
 					System.out.println("stopped");
 				}
 				
 			}, service);
-			player.insert(new SavingSong(new URL(args[0])), new SavingAudioDevice(new File(args[1])));
+			player.insert(new SavingSong(new URL(args[0])), new SavingAudioDevice(new File("saving.wav")));
 			player.start();
 			//wait 10 seconds (equals approx. 10 seconds of saved audio)
 			Thread.sleep(10000);

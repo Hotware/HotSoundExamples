@@ -30,6 +30,7 @@ public class RecordingSimplePlayer {
 
 				@Override
 				public void onEnd(MusicEvent pEvent) {
+					System.out.println(pEvent.getThrowable());
 					System.out.println("stopped");
 				}
 				
