@@ -20,14 +20,18 @@ public class SimplePlayer {
 			IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
 
 				@Override
-				public void onEnd(MusicEvent pEvent) {
-					System.out.println(pEvent.getThrowable());
+				public void onEnd(MusicEndEvent pEvent) {
 					System.out.println("stopped");
 					try {
 						pEvent.getSource().close();
 					} catch(MusicPlayerException e) {
 						e.printStackTrace();
 					}
+				}
+
+				@Override
+				public void onExeption(MusicExceptionEvent pEvent) {
+					System.out.println(pEvent.getException());
 				}
 				
 			});
