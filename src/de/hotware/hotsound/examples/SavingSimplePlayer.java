@@ -3,11 +3,16 @@ package de.hotware.hotsound.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import de.hotware.hotsound.audio.data.SavingAudioDevice;
+import de.hotware.hotsound.audio.data.BasicAudioDevice;
+import de.hotware.hotsound.audio.data.IAudioDevice;
+import de.hotware.hotsound.audio.data.MultiAudioDevice;
+import de.hotware.hotsound.audio.data.RecordingAudioDevice;
 import de.hotware.hotsound.audio.player.IMusicListener;
 import de.hotware.hotsound.audio.player.IMusicPlayer;
 import de.hotware.hotsound.audio.player.MusicPlayerException;
@@ -39,7 +44,11 @@ public class SavingSimplePlayer {
 				}
 				
 			}, service);
-			player.insert(new SavingSong(new URL(args[0])), new SavingAudioDevice(new File("saving.wav")));
+			List<IAudioDevice> audioDevices = new ArrayList<>();
+			//playback
+			audioDevices.add(new BasicAudioDevice());
+			audioDevices.add(new RecordingAudioDevice(new File("saving.wav")));
+			player.insert(new SavingSong(new URL(args[0])), new MultiAudioDevice(audioDevices));
 			player.start();
 			//wait 10 seconds (equals approx. 10 seconds of saved audio)
 			Thread.sleep(10000);
