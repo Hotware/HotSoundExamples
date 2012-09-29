@@ -12,9 +12,13 @@ import javax.sound.sampled.Mixer;
 
 import de.hotware.hotsound.audio.player.IMusicListener;
 import de.hotware.hotsound.audio.player.IMusicPlayer;
+import de.hotware.hotsound.audio.player.MusicEndEvent;
+import de.hotware.hotsound.audio.player.MusicExceptionEvent;
 import de.hotware.hotsound.audio.player.MusicPlayerException;
 import de.hotware.hotsound.audio.player.RecordSong;
 import de.hotware.hotsound.audio.player.StreamMusicPlayer;
+import de.hotware.hotsound.audio.data.IAudioDevice;
+import de.hotware.hotsound.audio.data.IAudioDevice.AudioDeviceException;
 import de.hotware.hotsound.audio.data.RecordAudio;
 import de.hotware.hotsound.audio.data.RecordingAudioDevice;
 
@@ -25,6 +29,7 @@ public class RecordingSimplePlayer {
 			InterruptedException, LineUnavailableException {
 		List<Mixer> mixers = RecordAudio.getRecordMixers();
 		if(mixers.size() > 0) {
+			final IAudioDevice dev = new RecordingAudioDevice(new File("recording.wav"));
 			final ExecutorService service = Executors.newSingleThreadExecutor();
 			IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
 
@@ -36,16 +41,21 @@ public class RecordingSimplePlayer {
 					} catch(MusicPlayerException e) {
 						e.printStackTrace();
 					}
+					try {
+						dev.close();
+					} catch(AudioDeviceException e) {
+						e.printStackTrace();
+					}
 				}
 
 				@Override
-				public void onExeption(MusicExceptionEvent pEvent) {
+				public void onException(MusicExceptionEvent pEvent) {
 					System.out.println(pEvent.getException());
 				}
 				
 			}, service);
 			Mixer mixer = mixers.get(0);
-			player.insert(new RecordSong(mixer), new RecordingAudioDevice(new File("recording.wav")));
+			player.insert(new RecordSong(mixer), dev);
 			player.start();
 			Thread.sleep(10000);
 			player.stop();

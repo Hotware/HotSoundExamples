@@ -9,12 +9,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import de.hotware.hotsound.audio.data.BasicAudioDevice;
+import de.hotware.hotsound.audio.data.BasicPlaybackAudioDevice;
 import de.hotware.hotsound.audio.data.IAudioDevice;
+import de.hotware.hotsound.audio.data.IAudioDevice.AudioDeviceException;
 import de.hotware.hotsound.audio.data.MultiAudioDevice;
 import de.hotware.hotsound.audio.data.RecordingAudioDevice;
 import de.hotware.hotsound.audio.player.IMusicListener;
 import de.hotware.hotsound.audio.player.IMusicPlayer;
+import de.hotware.hotsound.audio.player.MusicEndEvent;
+import de.hotware.hotsound.audio.player.MusicExceptionEvent;
 import de.hotware.hotsound.audio.player.MusicPlayerException;
 import de.hotware.hotsound.audio.player.SavingSong;
 import de.hotware.hotsound.audio.player.StreamMusicPlayer;
@@ -23,9 +26,12 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 public class SavingSimplePlayer {
 	
 	public static void main(String[] args) throws MusicPlayerException, MalformedURLException, InterruptedException {
-		if(args.length >= 1) {
+		if(args.length >= 0) {
 			ExecutorService service = Executors.newSingleThreadExecutor();
-			//multithreading because of blocking behaviour
+			List<IAudioDevice> audioDevices = new ArrayList<>();
+			audioDevices.add(new BasicPlaybackAudioDevice());
+			audioDevices.add(new RecordingAudioDevice(new File("saving.wav")));
+			final IAudioDevice dev = new MultiAudioDevice(audioDevices);
 			IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
 
 				@Override
@@ -36,19 +42,20 @@ public class SavingSimplePlayer {
 					} catch(MusicPlayerException e) {
 						e.printStackTrace();
 					}
+					try {
+						dev.close();
+					} catch(AudioDeviceException e) {
+						e.printStackTrace();
+					}
 				}
 
 				@Override
-				public void onExeption(MusicExceptionEvent pEvent) {
+				public void onException(MusicExceptionEvent pEvent) {
 					System.out.println(pEvent.getException());
 				}
 				
 			}, service);
-			List<IAudioDevice> audioDevices = new ArrayList<>();
-			//playback
-			audioDevices.add(new BasicAudioDevice());
-			audioDevices.add(new RecordingAudioDevice(new File("saving.wav")));
-			player.insert(new SavingSong(new URL(args[0])), new MultiAudioDevice(audioDevices));
+			player.insert(new SavingSong(new URL("http://listen.technobase.fm/tunein-oggvorbis-pls.ogg")), dev);
 			player.start();
 			//wait 10 seconds (equals approx. 10 seconds of saved audio)
 			Thread.sleep(10000);

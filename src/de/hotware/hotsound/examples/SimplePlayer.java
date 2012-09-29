@@ -3,9 +3,11 @@ package de.hotware.hotsound.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
-import de.hotware.hotsound.audio.player.BasicSong;
+import de.hotware.hotsound.audio.player.BasicPlaybackSong;
 import de.hotware.hotsound.audio.player.IMusicListener;
 import de.hotware.hotsound.audio.player.IMusicPlayer;
+import de.hotware.hotsound.audio.player.MusicEndEvent;
+import de.hotware.hotsound.audio.player.MusicExceptionEvent;
 import de.hotware.hotsound.audio.player.MusicPlayerException;
 import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 
@@ -30,12 +32,12 @@ public class SimplePlayer {
 				}
 
 				@Override
-				public void onExeption(MusicExceptionEvent pEvent) {
+				public void onException(MusicExceptionEvent pEvent) {
 					System.out.println(pEvent.getException());
 				}
 				
 			});
-			player.insert(new BasicSong(new File(args[0])));
+			player.insert(new BasicPlaybackSong(new File(args[0])));
 			player.start();
 		}
 	}
