@@ -4,10 +4,10 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 import de.hotware.hotsound.audio.player.BasicPlaybackSong;
-import de.hotware.hotsound.audio.player.IMusicListener;
-import de.hotware.hotsound.audio.player.IMusicPlayer;
 import de.hotware.hotsound.audio.player.MusicEndEvent;
 import de.hotware.hotsound.audio.player.MusicExceptionEvent;
+import de.hotware.hotsound.audio.player.MusicListener;
+import de.hotware.hotsound.audio.player.MusicPlayer;
 import de.hotware.hotsound.audio.player.MusicPlayerException;
 import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 
@@ -18,8 +18,8 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 public class SimplePlayer {
 
 	public static void main(String[] args) throws MusicPlayerException, MalformedURLException {
-		if(args.length >= 1) {
-			IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
+		if(args.length >= 1 || true) {
+			MusicPlayer player = new StreamMusicPlayer(new MusicListener() {
 
 				@Override
 				public void onEnd(MusicEndEvent pEvent) {
@@ -37,8 +37,9 @@ public class SimplePlayer {
 				}
 				
 			});
-			player.insert(new BasicPlaybackSong(new File(args[0])));
+			player.insert(new BasicPlaybackSong(new File("test.mp3")));
 			player.start();
+			player.skip(100000);
 		}
 	}
 

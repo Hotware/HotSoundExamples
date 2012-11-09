@@ -10,10 +10,10 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 
 import de.hotware.hotsound.audio.data.RecordAudio;
-import de.hotware.hotsound.audio.player.IMusicListener;
-import de.hotware.hotsound.audio.player.IMusicPlayer;
 import de.hotware.hotsound.audio.player.MusicEndEvent;
 import de.hotware.hotsound.audio.player.MusicExceptionEvent;
+import de.hotware.hotsound.audio.player.MusicListener;
+import de.hotware.hotsound.audio.player.MusicPlayer;
 import de.hotware.hotsound.audio.player.MusicPlayerException;
 import de.hotware.hotsound.audio.player.RecordSong;
 import de.hotware.hotsound.audio.player.StreamMusicPlayer;
@@ -25,7 +25,7 @@ public class SimpleMicroPhonePlayer {
 			List<Mixer> mixers = RecordAudio.getRecordMixers();
 			if(mixers.size() > 0) {
 				ExecutorService service = Executors.newSingleThreadExecutor();
-				final IMusicPlayer player = new StreamMusicPlayer(new IMusicListener() {
+				final MusicPlayer player = new StreamMusicPlayer(new MusicListener() {
 
 					@Override
 					public void onEnd(MusicEndEvent pEvent) {
