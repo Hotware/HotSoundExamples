@@ -18,7 +18,7 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 public class SimplePlayer {
 
 	public static void main(String[] args) throws MusicPlayerException, MalformedURLException {
-		if(args.length >= 1 || true) {
+		if(args.length >= 1) {
 			MusicPlayer player = new StreamMusicPlayer(new MusicListener() {
 
 				@Override
@@ -37,9 +37,9 @@ public class SimplePlayer {
 				}
 				
 			});
-			player.insert(new BasicPlaybackSong(new File("test.mp3")));
+			player.insert(new BasicPlaybackSong(new File(args[0])));
 			player.start();
-			player.skip(100000);
+//			player.skip(100000);
 		}
 	}
 
