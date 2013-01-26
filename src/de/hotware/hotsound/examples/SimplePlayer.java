@@ -3,6 +3,7 @@ package de.hotware.hotsound.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import de.hotware.hotsound.audio.data.BasicPlaybackAudioDevice;
 import de.hotware.hotsound.audio.player.BasicPlaybackSong;
 import de.hotware.hotsound.audio.player.MusicEndEvent;
 import de.hotware.hotsound.audio.player.MusicExceptionEvent;
@@ -19,6 +20,7 @@ public class SimplePlayer {
 
 	public static void main(String[] args) throws MusicPlayerException, MalformedURLException {
 		if(args.length >= 1) {
+			@SuppressWarnings("resource")
 			MusicPlayer player = new StreamMusicPlayer(new MusicListener() {
 
 				@Override
@@ -37,7 +39,7 @@ public class SimplePlayer {
 				}
 				
 			});
-			player.insert(new BasicPlaybackSong(new File(args[0])));
+			player.insert(new BasicPlaybackSong(new File(args[0])), new BasicPlaybackAudioDevice());
 			player.start();
 //			player.skip(100000);
 		}

@@ -31,6 +31,7 @@ public class SavingSimplePlayer {
 			//always stop for bug avoidance in saving the audiofile
 			Thread.sleep(10000);
 			player.stop();
+			player.close();
 		}
 	}
 

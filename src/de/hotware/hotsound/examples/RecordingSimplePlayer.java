@@ -54,6 +54,7 @@ public class RecordingSimplePlayer {
 			player.start();
 			Thread.sleep(10000);
 			player.stop();
+			player.close();
 		}
 	}
 

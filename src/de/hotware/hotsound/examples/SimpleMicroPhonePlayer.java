@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 
+import de.hotware.hotsound.audio.data.BasicPlaybackAudioDevice;
 import de.hotware.hotsound.audio.data.RecordAudio;
 import de.hotware.hotsound.audio.player.MusicEndEvent;
 import de.hotware.hotsound.audio.player.MusicExceptionEvent;
@@ -45,13 +46,14 @@ public class SimpleMicroPhonePlayer {
 				}, service);
 				Mixer mixer = mixers.get(0);
 				mixer.open();
-				player.insert(new RecordSong(mixer));
+				player.insert(new RecordSong(mixer), new BasicPlaybackAudioDevice());
 				player.start();
 				//wait 10 seconds (equals approx. 10 seconds of saved audio)
 				Thread.sleep(10000);
 				player.stop();
 				service.shutdown();
 				service.awaitTermination(1000, TimeUnit.MILLISECONDS);
+				player.close();
 			}
 	}
 

@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import de.hotware.hotsound.audio.data.AudioDevice;
+import de.hotware.hotsound.audio.data.BasicPlaybackAudioDevice;
 import de.hotware.hotsound.audio.player.MusicListener;
 import de.hotware.hotsound.audio.player.MusicPlayer;
 import de.hotware.hotsound.audio.player.Song;
@@ -35,13 +37,15 @@ import de.hotware.hotsound.audio.playlist.PlaylistParser;
 import de.hotware.hotsound.audio.playlist.StockParser;
 
 public class PlaylistPlayer {
-	
+
 	protected int mCurrent;
 	protected List<Song> mPlaylist;
 	protected MusicPlayer mMusicPlayer;
-	
+	protected AudioDevice mAudioDevice;
+
 	public PlaylistPlayer() {
 		this.mCurrent = 0;
+		this.mAudioDevice = new BasicPlaybackAudioDevice();
 		this.mMusicPlayer = new StreamMusicPlayer(new MusicListener() {
 
 			@Override
@@ -50,7 +54,9 @@ public class PlaylistPlayer {
 				int size = PlaylistPlayer.this.mPlaylist.size();
 				int current = ++PlaylistPlayer.this.mCurrent;
 				try {
-					PlaylistPlayer.this.mMusicPlayer.insert(PlaylistPlayer.this.mPlaylist.get(current % size));
+					PlaylistPlayer.this.mMusicPlayer.insert(
+							PlaylistPlayer.this.mPlaylist.get(current % size),
+							PlaylistPlayer.this.mAudioDevice);
 					PlaylistPlayer.this.mMusicPlayer.start();
 					System.out.println(pEvent.getSource() + " started again.");
 				} catch (MusicPlayerException e) {
@@ -62,28 +68,30 @@ public class PlaylistPlayer {
 			public void onException(MusicExceptionEvent pEvent) {
 				pEvent.getException().printStackTrace();
 			}
-			
+
 		});
 	}
-	
+
 	public void init(File pFile) throws IOException, MusicPlayerException {
 		PlaylistParser parser = StockParser.M3U;
 		final List<Song> playlist = parser.parse(pFile);
-		if(playlist.size() > 0 ) {
+		if (playlist.size() > 0) {
 			this.mPlaylist = playlist;
-			this.mMusicPlayer.insert(playlist.get(0));
+			this.mMusicPlayer.insert(playlist.get(0), 
+					this.mAudioDevice);
 		}
 	}
-	
+
 	public void start() throws MusicPlayerException {
 		this.mMusicPlayer.start();
 		System.out.println(this.mMusicPlayer + " started.");
 	}
-	
-	public static void main(String[] pArgs) throws MusicPlayerException, InterruptedException, IOException {
+
+	public static void main(String[] pArgs) throws MusicPlayerException,
+			InterruptedException, IOException {
 		PlaylistPlayer player = new PlaylistPlayer();
 		player.init(new File(pArgs[0]));
 		player.start();
 	}
-	
+
 }
